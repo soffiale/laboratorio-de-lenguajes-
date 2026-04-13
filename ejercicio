@@ -1,0 +1,101 @@
+# Clase Correo
+class Correo:
+    def __init__(self, asunto, mensaje, remitente, destinatarios):
+        self.asunto = asunto
+        self.mensaje = mensaje
+        self.remitente = remitente
+        self.destinatarios = destinatarios  # lista
+        self.leido = False  # por defecto no leído
+
+
+# Clase Contacto
+class Contacto:
+    def __init__(self, nombre, apellido, email):
+        self.nombre = nombre
+        self.apellido = apellido
+        self.email = email
+
+
+# Clase Cuenta
+class Cuenta:
+    def __init__(self, usuario, direccion_mail, servidor_entrada, servidor_salida):
+        self.usuario = usuario
+        self.direccion_mail = direccion_mail
+        self.servidor_entrada = servidor_entrada
+        self.servidor_salida = servidor_salida
+
+
+# Clase principal ClienteCorreo
+class ClienteCorreo:
+    def __init__(self, cuenta):
+        self.cuenta = cuenta
+        self.contactos = []
+        self.recibidos = []
+        self.enviados = []
+
+    # Funcionalidades
+
+    def cantidad_correos(self):
+        return len(self.recibidos) + len(self.enviados)
+
+    def cantidad_recibidos(self):
+        return len(self.recibidos)
+
+    def cantidad_enviados(self):
+        return len(self.enviados)
+
+    def cantidad_no_leidos(self):
+        contador = 0
+        for correo in self.recibidos:
+            if not correo.leido:
+                contador += 1
+        return contador
+
+    def cantidad_contactos(self):
+        return len(self.contactos)
+
+    def agregar_correo_recibido(self, correo):
+        self.recibidos.append(correo)
+
+    def enviar_correo(self, correo):
+        self.enviados.append(correo)
+
+    def agregar_contacto(self, contacto):
+        self.contactos.append(contacto)
+
+
+# -----------------------------
+# PRUEBA DEL PROGRAMA
+# -----------------------------
+
+# Crear cuenta
+cuenta = Cuenta("sofia", "sofia@gmail.com", "imap.gmail.com", "smtp.gmail.com")
+
+# Crear cliente de correo
+cliente = ClienteCorreo(cuenta)
+
+# Crear contactos
+c1 = Contacto("Juan", "Perez", "juan@gmail.com")
+c2 = Contacto("Ana", "Lopez", "ana@gmail.com")
+
+cliente.agregar_contacto(c1)
+cliente.agregar_contacto(c2)
+
+# Crear correos
+correo1 = Correo("Hola", "¿Cómo estás?", "juan@gmail.com", ["sofia@gmail.com"])
+correo2 = Correo("Trabajo", "Entrega mañana", "ana@gmail.com", ["sofia@gmail.com"])
+
+# Simular recepción
+cliente.agregar_correo_recibido(correo1)
+cliente.agregar_correo_recibido(correo2)
+
+# Simular envío
+correo3 = Correo("Re: Hola", "Todo bien!", "sofia@gmail.com", ["juan@gmail.com"])
+cliente.enviar_correo(correo3)
+
+# Mostrar resultados
+print("Total correos:", cliente.cantidad_correos())
+print("Recibidos:", cliente.cantidad_recibidos())
+print("Enviados:", cliente.cantidad_enviados())
+print("No leídos:", cliente.cantidad_no_leidos())
+print("Contactos:", cliente.cantidad_contactos())
